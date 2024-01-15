@@ -1,15 +1,11 @@
-x = 2
-y = x + 5  # NameError: name 'x' is not defined
-print(y)
+# money = 5,000,000
+# print(money)
+# print(type(money))
+#
+# cash = 5_000_000
+# print(cash)
+# print(type(cash))
 
-print(type(3.14))
-print(type(3.14) == float)
-print(isinstance(3.14, float))
-print(isinstance("Inha", float))
-print(isinstance(55, float))
-
-artists = ['BTS', '뉴진스', '핑클', 'SES', 'HOT', '블랙핑크']
-groups = artists
-print(artists, groups)
-artists[2] = '세븐틴'
-print(artists, groups)
+base_number = int(input('INput base number'))
+exponent_number = int(input('Input exponent number'))
+print(f'밑 {base_number}, 지수는 {exponent_number}, 결과값은 {base_number**exponent_number}')
