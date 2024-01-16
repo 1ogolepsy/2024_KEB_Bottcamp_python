@@ -1,9 +1,19 @@
-uiversity = "Inha\nUniversity!"
-print(uiversity[0:4])
-print(uiversity[:-11])
+course = "* KEB 2024#.!*# KEB! a Bootcamp KEB...*!#"
+# print(course)
+# print(course.replace('KEB','Inha'))
+# course = course.replace('KEB', 'Inha')
+# print(course)
 
-number1 = input("First number : ")
-number2 = input("Second number : ")
-print((number1 + number2))
-print(number1 * 3)
-# print(number1 + 3) #type error
+# print(course)
+# course = course.replace('KEB', "Inha", 2)
+# print(course)
+# print(course.strip('!#.*'))
+
+print(course.find('KEB'))
+print(course.rfind('KEB'))
+print(course.index('KEB'))
+print(course.rindex('KEB'))
+
+print(course.find('Inha'))
+print(course.index('Inha'))
+
