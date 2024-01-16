@@ -1,22 +1,15 @@
-# subject = {'python' : 'ken', 'c++':'sung','data structure':'kim','database':'kang'}
-# print("{0[python]} {0[database]}".format(subject))
+univ = 'inha'
+i = 0
+while i < len(univ):
+    print(univ[i], end=' ')
+    i += 1
 
-number = int(input('Input number : '))
-is_prime = True
+print()
 
-if number <= 2:
-    print(f'{number} is NOT prime number')
-else:
-    i = 2
+for letter in univ:
+    print(letter, end=' ')
 
-    while i < number:
-        if number % i == 0:
-            is_prime = False
-            break
-            # print(i)
-        i += 1
+print()
 
-    if is_prime:
-        print(f'{number} is prime number')
-    else:
-        print(f'{number} is NOT prime number')
+for k in range(0, len(univ), 1):
+    print(univ[k], end=' ')
