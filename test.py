@@ -1,3 +1,6 @@
-a = dict(a='A',b='B',c='C')
-test = a.items()
-print(type(test), test, list(test))
+tup1 = ('a', 'b')
+tup2 = ('c', 'd')
+
+tup1[0] = 'A'
+
+print(tup1)
