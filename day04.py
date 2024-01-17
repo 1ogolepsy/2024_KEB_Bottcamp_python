@@ -1,19 +1,23 @@
-# squares = list()
-# squares.append(1*1)
-# squares.append(2*2)
-# squares.append(3*3)
-# squares.append(4*4)
-# squares.append(5*5)
+sugang = dict(python='kim', cpp = 'sung', db='kang')
+# print(sugang)
 #
-# squares = list()
-# for i in range(1,6,1):
-#     squares.append(i*i)
-# print(squares)
-
+# sugang['datastructer']='kim'
+# print(sugang)
 #
-# squares = [i*i for i in range(1,6)]
-# print(squares)
+# sugang['datastructer']='park'
+# print(sugang)
+# print(sugang['db'])
+# print(sugang.get('opensource'))
+# print(sugang.get('opensource', 'not exist'))
+#
+# for s in sugang.items():
+#     print(s)
 
+for k in sugang.keys():
+    print(k)
 
-even_squares = [i*i for i in range(1,6) if i % 2 == 0]
-print(even_squares)
+for v in sugang.values():
+    print(v)
+
+print(sugang.keys())
+print(type(sugang.keys()))
