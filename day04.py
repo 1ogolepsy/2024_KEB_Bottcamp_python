@@ -1,70 +1,25 @@
-#성능개선 > 1. 4번에서 입력값이 숫자가 하나일 때 등 사용법 안내, 2. 반복되는 것들 함수 3. 화씨가 절대온도 밑으로 내려가는 이슈
-#
-
-while True :
-    menu = input("1) Fahrenheit -> Celsius  2) Celsius -> Fahrenheit 3) judge prime number \
-4) get prime number in range 5) Quit program : ")
-
-    if menu == '1' :
-
-        fahrenheit = float(input("화씨온도 입력 : "))
-        print(f'fahrenheit : {fahrenheit}F, Celsius : {(fahrenheit - 32)*(5/9):.2f}')
-    elif menu == '2' :
-        celsius = float(input("섭씨온도 입력 : "))
-        print(f'fahrenheit : {(celsius*(9/5)+32):.4f}F, Celsius : {celsius}')
-
-    elif menu == '3':
-        number = int(input('Input number : '))
-        is_prime = True
-
-        if number <= 2:
-            print(f'{number} is NOT prime number')
-        else:
-            i = 2
-
-            while i < number:
-                if number % i == 0:
-                    is_prime = False
-                    break
-                    # print(i)
-                i += 1
-
-            if is_prime:
-                print(f'{number} is prime number')
-            else:
-                print(f'{number} is NOT prime number')
-
-    elif menu == '4':
-        #여기서부터
-        numbers = input('First number Second number: ').split()
-        n1 = int(numbers[0])
-        n2 = int(numbers[1]) + 1
-
-        if n2 < n1:
-            n1, n2 = n2, n1
-        #여기까지 간소화 가능
-        for number in range(n1, n2):
-            if number < 2:
-                continue
-
-            is_prime = True
-
-            i = 2
-            while i*i <= number:
-
-                if number % i == 0:
-                    is_prime = False
-                    break
-                i += 1
-
-            if is_prime:
-                print(number)
-
-    elif menu == '5':
-        print('Terminate Program.')
-        break
-
-    else:
-        print("유효하지 않은 메뉴입니다.")
+t1= (5)
+t2 = 5,
+t3 = (5,)
+t4 = (5, 7)
+t5 = 5, 7
+print(type(t1), type(t2), type(t3), type(t4), type(t5))
+t6 = 'python', 'kim' #packing
+print(type(t6), t6[1])
+subject, prof = t6 #unpacking
+print(subject, prof)
+t7 = ()
+print(type(t7))
+t9 = 1, 2, 3
+t10 = 1, 2
+print(t9 == t10)
+print(t9 < t10)
+t11 = 4.43,
+t12 = 4.97, 4.1, 3.27
+print(t11 + t12)
+print(id(t11))
+t11 = t11 + t12
+print(t11)
+print((id(t11)))
 
 
