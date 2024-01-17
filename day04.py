@@ -1,5 +1,5 @@
 while True :
-    menu = input("1) Fahrenheit -> Celsius  2) Celsius -> Fahrenheit 3) prime number judge \
+    menu = input("1) Fahrenheit -> Celsius  2) Celsius -> Fahrenheit 3) judge prime number \
 4) get prime number in range 5) Quit program : ")
 
     if menu == '1' :
@@ -57,5 +57,7 @@ while True :
         print('Terminate Program.')
         break
 
+    else:
+        print("유효하지 않은 메뉴입니다.")
 
 
