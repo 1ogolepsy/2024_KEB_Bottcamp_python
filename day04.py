@@ -1,11 +1,12 @@
-subjects = ['데이터베이스','리눅스','!','C++', 'java', '1', 'python', '5','java']
-# subjects[::-1]
-# print(subjects)
-#
-# subjects.reverse()
-# print(subjects)
-# subjects.remove('java')
-# subjects.sort(reverse=False)
-copy_subject = sorted(subjects)
-print(subjects)
-print(copy_subject)
+import copy
+subject = ['a', ['b', 'c'], 'd',]
+a = subject
+b = subject.copy()
+c = list(subject)
+d = subject[:]
+e = copy.deepcopy(a)
+print(subject, a, b, c, d, e)
+
+subject[1][1] = 'x'
+
+print(subject, a, b, c, d, e)
