@@ -1,2 +1,1 @@
-for i in (2, 4):
-    print(i)
+print(list(range(3,8)))
