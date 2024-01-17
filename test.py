@@ -1,1 +1,2 @@
-print(list(range(3,8)))
+a = dict('def'='True')
+print(a)
