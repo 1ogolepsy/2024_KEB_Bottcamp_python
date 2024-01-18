@@ -1,15 +1,9 @@
-# def out_func(nout):
-#     def innner_func(nin):
-#         return nin * nin
-#     return innner_func((nout))
-#
-# print(out_func(5))
+a = ['7', '-11', '3']
+hap = 0
+for i in a:
+    hap += int(i)
 
-#closure
-def out_func(nout):
-    def innner_func():
-        return nout * nout
-    return innner_func
+print(hap)
 
-x = out_func(5)
-print(x())
+print(type(map(int, a)))
+
