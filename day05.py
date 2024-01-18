@@ -1,10 +1,13 @@
-univ ='inha university'
-# counts_alphabet = {letter: univ.count(letter) for letter in univ}
-# print(counts_alphabet)
+def squares(*n) -> list:
+    '''
+    넘겨 받은 수치 데이터들의 거듭제곱 값을 리스트에 담아서 리턴
+    :param n: tuple
+    :return: list
+    '''
+    return [i*i for i in n]
 
-counts_alphabet = {}
-for i in univ:
-    counts_alphabet.update({i:univ.count(i)})
-    #counts_alphabet[i] = univ.count(i)
-for i, j in counts_alphabet.items():
-    print(j)
+def run_function(f, *number):
+    print(*number)
+    return f(*number)
+
+print(run_function(squares,3,4))
