@@ -1,6 +1,5 @@
-tup1 = ('a', 'b')
-tup2 = ('c', 'd')
+tup1 = {'a':'A'}
 
-tup1[0] = 'A'
+tup1.clear()
 
 print(tup1)

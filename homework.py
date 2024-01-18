@@ -30,8 +30,9 @@ print(list(life['animals'].keys()))
 print(life['animals']['cats'])
 
 #8.6.10
-square = {keys:values for keys, values in zip(range(10),[i*i for i in range(10)])}
-print(square)
+squares = {keys:values for keys, values in zip(range(10),[i*i for i in range(10)])}
+#{n: n*n for n in range(10)}
+print(squares)
 
 #번외편, e2f의 key와 value를 반대로 한 f2e를 만든다면
 f2e={}
