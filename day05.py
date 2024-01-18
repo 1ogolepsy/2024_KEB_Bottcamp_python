@@ -1,9 +1,8 @@
-a = ['7', '-11', '3']
-hap = 0
-for i in a:
-    hap += int(i)
+def squares(n):
+    return n*n
 
-print(hap)
+even_number = [i for i in range(51) if i % 2 == 0]
+print(even_number)
+print(tuple(map(squares, even_number)))
 
-print(type(map(int, a)))
-
+print(tuple(map(lambda x : x**2, even_number)))
