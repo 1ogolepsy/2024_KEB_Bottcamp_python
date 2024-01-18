@@ -41,14 +41,14 @@ while True :
         #여기서부터
         numbers = input('First number Second number: ').split()
         n1 = int(numbers[0])
-        n2 = int(numbers[1]) + 1
+        n2 = int(numbers[1])
 
         if n2 < n1:
             n1, n2 = n2, n1
         #여기까지 간소화 가능
-        for number in range(n1, n2):
+        for number in range(n1, n2+1):
             if isprime(number):
-                print(number)
+                print(number, end=' ')
 
     elif menu == '5':
         print('Terminate Program.')
