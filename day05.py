@@ -6,5 +6,5 @@ counts_alphabet = {}
 for i in univ:
     counts_alphabet.update({i:univ.count(i)})
     #counts_alphabet[i] = univ.count(i)
-
-print(counts_alphabet)
+for i, j in counts_alphabet.items():
+    print(j)

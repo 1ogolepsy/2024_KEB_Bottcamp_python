@@ -1,5 +1,4 @@
-tup1 = {'a':'A'}
+Set1 = {'a', 'b'}
+drinks = ('vodka','소주')
 
-tup1.clear()
-
-print(tup1)
+print(Set1 & drinks)
