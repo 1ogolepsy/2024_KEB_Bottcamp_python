@@ -1,27 +1,29 @@
-def factorial_repertition(n) -> int:
-    '''
-    반복문을 이용한 팩토리얼 함수
-    :param n: int
-    :return: int
-    '''
-    result = 1
-    for i in range(2, n+1):
-        result = result* i
-    return result
+import random
+# random
+# numbers = list()
+# for i in range(5):
+#     numbers.append(random.randint(1, 100))
+numbers = [random.randint(1, 100) for i in range(5)]
 
-print(factorial_repertition(int(input('number : '))))
+print(numbers)
 
-def factorial_recursion(n) -> int:
-    '''
-    재귀함수를 사용한 팩토리얼 함수
-    :param n: int
-    :return: function, int
-    '''
+class OopsException(Exception):
+    pass
 
-    if n == 1:
-        return n
-    else:
-        return n* factorial_recursion(n-1)
-
-number = int(input('number: '))
-print(factorial_recursion(number))
+try:
+    pick = int(input(f'Input index (0 ~ {len(numbers) - 1} ):'))
+    print(numbers[pick])
+    print(5/2)
+    raise OopsException('Oops~~')
+except IndexError as err:
+    print(f'Out of range : Wrong index number \n {err}')
+except ValueError:
+    print('Input Only Number~')
+except ZeroDivisionError as err:
+    print(f"The denominator cannot be 0.\n{err}")
+# except OopsException as err:
+#     print(f"Oops Oops {err}")
+except Exception as err:
+    print(f"Error occurs : {err}")
+else:
+    print(f"Program terminate")

@@ -1,14 +1,16 @@
-def func(start, end):
-    'like range()'
-    while start < end:
-        yield start
-        start += 1
+def Original_func(n1, n2):
+    if n1 and n2 is True:
+        print('do something')
 
-Range = func(1,6)
+def decoration(func):
+    def inner(*args):
+        print('start')
+        print(args)
+        print(*args)
+        func(*args)
+        print('end')
+    return inner
 
-for i in Range:
-    print(i, end=' ')
+test = decoration(Original_func)
 
-List = list(Range)
-print(List)
-
+test(3, 4)
