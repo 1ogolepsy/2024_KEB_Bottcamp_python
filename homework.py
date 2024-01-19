@@ -1,46 +1,36 @@
-e2f = {'dog':'chien','cat':'chat','walrus':'morse'}
+#9.16.1
+def good():
+    return ['Harry', 'Ron', 'Hermione']
 
-#8.6.1
-print(e2f)
+#9.16.2
+def get_odds():
+    odd_num = []
+    for i in range(10):
+        if i % 2 != 0:
+            odd_num += [i]
+    return odd_num
+print(get_odds())
+#9.16.3
+def test(function):
+    print('start')
+    a = function()
+    print('end')
+    return a
 
-#8.6.2
-print(list(e2f)[2])
+def OriginalFunc():
+    print('프로그램이 실행되었습니다.')
+    return print('프로그램이 끝났습니다.')
 
-#8.6.3
-f2e = dict(e2f.items())
-print(f2e)
+test(OriginalFunc)
 
-#8.6.4
-print(e2f['dog'])
+#9.16.4
+class OopsException(Exception):
+    print('숫자를 입력하지 않았습니다. 프로그램을 종료합니다.')
 
-#8.6.5
-print(list(e2f.keys()))
-
-#8.6.6
-life = dict(animals={'cats':'Henri','octopi':'Grumpy','emus':'Lucy'},plants={},other={})
-print(life)
-
-#8.6.7
-print(list(life.keys()))
-
-#8.6.8
-print(list(life['animals'].keys()))
-
-#8.6.9
-print(life['animals']['cats'])
-
-#8.6.10
-squares = {keys:values for keys, values in zip(range(10),[i*i for i in range(10)])}
-#{n: n*n for n in range(10)}
-print(squares)
-
-#번외편, e2f의 key와 value를 반대로 한 f2e를 만든다면
-f2e={}
-print(list(e2f.items()))
-
-for i in range(len(e2f)):
-    new_key = list(e2f.items())[i][1]
-    new_value = list(e2f.items())[i][0]
-    f2e.update({new_key:new_value})
-
-print(f2e)
+num = input("숫자를 입력하세요. : ")
+try:
+    print(num)
+    if num != int:
+        raise OopsException(num)
+except OopsException as Oops:
+    print('숫자를 입력하지 않았습니다. 프로그램을 종료합니다.')
