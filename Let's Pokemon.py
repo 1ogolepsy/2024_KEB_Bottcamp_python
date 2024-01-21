@@ -26,7 +26,7 @@
 
 import random
 r = random.Random()
-
+import copy
 # 마을 순서 리스트
 village = [('태초마을', 0), ('상록시티', 200), ('회색시티', 150), ('블루시티', 300), ('갈색시티', 100), ('보라타운',120), ('무지개시티', 150), ('연분홍시티', 100), ('노랑시티', 50), ('홍련마을', 100), ('석영고원', 50)]
 
@@ -47,12 +47,13 @@ def experience(self, target):
     :param target: 상대, 클래스 객체
     :return:
     '''
-    try:
-        self.experience += (target.lv) * 100 + r.randint(1, 50)
-        if self.experience >= 1000 * (self.lv):
-            print(f'!!!! {self.name}의 진화가 가능합니다.!!!!')
-    except AttributeError as error:
-        pass
+    if self in me.mypokemon:
+        try:
+            self.experience += (target.lv) * 100 + r.randint(1, 50)
+            if self.experience >= 1000 * (self.lv):
+                print(f'!!!! {self.name}의 진화가 가능합니다.!!!!')
+        except AttributeError as error:
+            pass
 
 def Lets_go_village(now):
     '''
@@ -161,6 +162,7 @@ def attack(target, self, damage, skillpoint):
                 -----------------------------------------
                 ''')
                 experience(self, target)
+
             else:
                 pass
 
@@ -174,12 +176,75 @@ def attack(target, self, damage, skillpoint):
     self.plus_damage = 0
 
 #스토리 중 전투가 시작되는 함수
-def Lets_pight(My_pokemon, target):
-    while My_pokemon.hp > 0 and target.hp > 0:
-        My_pokemon.attack(target)
-        if target.hp > 0:
-            target.attack(My_pokemon)
-    target.health()
+def Lets_pight(self, target):
+    keep_pight = True
+    def What_kind_of_behave(self, target, pight):
+
+        if self in me.mypokemon:
+            behave = input('''
+                    ---------------------------------------------------
+                    취할 행동을 선택하세요.
+                    1) 공격하기
+                    2) 도망가기
+                    3) 포획하기
+                    ---------------------------------------------------
+                    ''')
+        else:
+            behave = str(random.choices(range(1,3), weights=[49,1])[0])
+
+
+        if behave in ('공격하기', '1'):
+            self.attack(target)
+            return True
+
+        elif behave in ('도망가기', '2'):
+            target_hp_percentage = (target.original_hp / target.hp) / 5
+            percentage = random.choices(range(1, 11), weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, target_hp_percentage])
+            if percentage == 10:
+                target.health()
+                print(f'''
+                -----------------------------------------
+                {self.name}이(가) {target.name}으로부터 성공적으로 도망쳤습니다.
+                -----------------------------------------
+                ''')
+                return False
+            else:
+                print(f'''
+                -----------------------------------------------
+               {self.name}이(가) {target.name}으로부터 도망치는 것에 실패했습니다.
+                {target.name}의 hp가 적을수록 도망치는 것이 수월합니다.
+                -----------------------------------------------
+                ''')
+                return True
+        elif behave in ('포획하기', '3'):
+            target_hp_percentage = (target.original_hp / target.hp)*10
+            percentage = random.choices(range(1, 11), weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, target_hp_percentage])[0]
+            if percentage == 10:
+                my_pokemon = copy.deepcopy(target)
+                me.mypokemon += [my_pokemon]
+                print(f'''
+                -----------------------------------------------
+                우와! 신난다! {target.name}을 잡았다!
+                -----------------------------------------------
+                ''')
+                return False
+            else:
+                print(f'''
+                -----------------------------------------------
+                {percentage}
+                {target.name}을 포획하는 것에 실패했습니다.
+                {target.name}의 hp가 적을수록 포획하는 것이 수월합니다.
+                -----------------------------------------------
+                ''')
+                return True
+
+    while True:
+        if ispight() and target.hp > 0 and keep_pight:
+            keep_pight = What_kind_of_behave(self, target, keep_pight)
+            if target.hp > 0 and keep_pight:
+                keep_pight = What_kind_of_behave(target, self, keep_pight)
+        else:
+            break
 
 #포켓몬을 정의하는 클래스
 class Pokemon:
@@ -284,6 +349,9 @@ while ispight(): # 내 포켓몬이 싸움을 할 수 있는 동안에만 게임
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>1
             ''')
         Lets_pight(me.mypokemon[0], monster)
+        monster.hp = monster.original_hp
+        monster.skill_point = monster.original_skill_point
+
     elif behave_kind in ('다음 마을로 이동', '2'):
         Lets_go_village(me.now_village)
         In_village(me)
@@ -297,3 +365,8 @@ while ispight(): # 내 포켓몬이 싸움을 할 수 있는 동안에만 게임
         ----------------------------------------------
         잘못된 값을 입력했습니다.
         ----------------------------------------------''')
+
+# 도망가기 점검
+# 몬스터가 도망갔을 때 점검
+# 마을에서 하는 것들 추가
+# 코드 효율 점검
