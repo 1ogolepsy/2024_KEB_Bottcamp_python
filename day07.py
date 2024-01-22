@@ -1,60 +1,35 @@
-class FlyingBehavior:
-    def fly(self):
-        return f'하늘을 훨훨 날아갑니다~'
+# module
+from mymath import *
 
-class SwimmingBegavior:
-    def swim(self):
-        return f'수영을 합니다.'
+while True:
+    menu = input("1) Fahrenheit -> Celsius   2) Celsius -> Fahrenheit   3) Prime1   4) Prime2   5) Quit program : ")
 
-class NoFly(FlyingBehavior):
-    def fly(self):
-        return f'하늘을 날 수 없습니다.'
+    if menu == '1':
+        fahrenheit = float(input('Input Fahrenheit : '))
+        print(f'Fahrenheit : {fahrenheit}F, Celsius : {fahrenheit_to_celsius(fahrenheit):.4f}C')
+    elif menu == '2':
+        celsius = float(input('Input Celsius : '))
+        print(f'Celsius : {celsius}C, Fahrenheit : {celsius_to_fahrenheit(celsius):.4f}F')
+    elif menu == '3':
+        number = int(input("Input number : "))
+        if isprime(number):
+            print(f'{number} is prime number')
+        else:
+            print(f'{number} is NOT prime number!')
+    elif menu == '4':
+        numbers = input("Input first second number : ").split()
+        n1 = int(numbers[0])
+        n2 = int(numbers[1])
 
-class FlyWithWings(FlyingBehavior):
-    def fly(self):
-        return f'날개로 하늘을 훨훨 날아갑니다.'
+        if n1 > n2:
+            n1, n2 = n2, n1
 
-class JetPack(FlyingBehavior):
-    def fly(self):
-        return  f'로켓추진기로 하늘을 날아갑니다.'
-
-class Pokemon:
-    def __init__(self, name, hp, fly_behavior):
-        self.__name = name
-        self.hp =hp
-        self.fly = fly_behavior #aggregation (has-a)
-    def attack(self):
-        print('attack')
-    @property
-    def name(self):
-        print('inside getter')
-        return self.__name
-    @name.setter
-    def name(self, new_name):
-        print('inside setter')
-        self.__name = new_name
-
-    def __str__(self):
-        return self.__name + '입니다.'
-    def __add__(self, other):
-        return print(f'두 포켓몬스터 체력의 합은{self.hp + " + " + other.hp}입니다.')
-
-    def set_fly_behavior(self, fly):
-        self.fly = fly
-
-class Charizard(Pokemon):
-    pass
-
-class Pikachu(Pokemon):
-    pass
-
-F = FlyWithWings()
-
-no_F = NoFly()
-g1 = Pikachu('피카츄', 100, no_F)
-c1 = Charizard('리자몽', 120, F)
-
-print(c1.fly.fly())
-print(g1.fly.fly())
-g1.set_fly_behavior(JetPack())
-print(g1.fly.fly())
+        for number in range(n1, n2 + 1):
+            if isprime(number):
+                print(number, end=' ')
+        print()
+    elif menu == '5':
+        print('Terminate Program.')
+        break
+    else:
+        print('Invalid Menu!')

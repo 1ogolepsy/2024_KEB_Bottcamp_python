@@ -130,7 +130,7 @@ class Me: #player를 정의하는 클래스
         self.mypokemon = [] #player가 포켓몬이 들어있는 리스트
         self.now_village = ('태초마을', 0) #player의 현재 마을을 알려주는 속성 (마을이름, 발걸음 수)
 
-def attack(target, self, damage, skillpoint):
+def attack(target, self, damage, skillpoint, last_target_behavior):
     '''
     self가 target을 공격하는 함수
     :param target: target(class 객체)
@@ -140,6 +140,13 @@ def attack(target, self, damage, skillpoint):
     :return:
     '''
     if self.skill_point >= skillpoint:
+        if last_target_behavior == 'defence':
+            print(f'''
+            -----------------------------------------
+            {target.name}이 방어태세에 돌입하여
+            공격에 실패했습니다.
+            -----------------------------------------
+            ''')
         target.hp -= damage
         self.skill_point -= skillpoint
         print(f'''
@@ -261,7 +268,7 @@ class Normal(Pokemon):
     def __init__(self):
         self.type = 'normal'
         self.plus_damage = 0
-    def attack(self, target):
+    def attack(self, target, last_target_behavior):
 
         # 무슨 스킬을 사용할지 어택에 담음
         if self in me.mypokemon:
@@ -273,20 +280,21 @@ class Normal(Pokemon):
             2) 마구할퀴기 : 데미지 15 스킬 포인트: 6
             3) 몸통박치기 : 데미지 6 스킬 포인트: 2
             4) 비축하기 : 다음 번 공격에 랜덤하게 데미지를 추가한다. 스킬 포인트: 10
+            5) 방어하기 : 다음 번 공격을 방어한다. 스킬 포인트: 20
     
             스킬 이름 또는 번호를 입력하세요: ''')
         else:
             attackkind = str(r.randint(1, 4))
-
+        my_behavior = 'attack'
         #attack에 담긴대로 스킬 적용
         if attackkind in ('마구찌르기', '1'):
-            attack(target, self, (10+self.plus_damage), 5)
+            attack(target, self, (10+self.plus_damage), 5, last_target_behavior)
 
         elif attackkind in ('마구할퀴기', '2'):
-            attack(target, self, 15+self.plus_damage, 6)
+            attack(target, self, 15+self.plus_damage, 6, last_target_behavior)
 
         elif attackkind in ('몸통박치기', '3'):
-            attack(target, self, 15+self.plus_damage, 6)
+            attack(target, self, 15+self.plus_damage, 6, last_target_behavior)
 
         elif attackkind in ('비축하기', '4'):
             self.plus_damage = r.randint(5, 50)
@@ -294,8 +302,19 @@ class Normal(Pokemon):
             -------------------------------------
             {self.name}이(가) 비축을 완료했습니다.
             -------------------------------------''')
+            self.skill_point -= 10
+            my_behavior = 'increased damage'
+
+        elif attackkind in ('방어하기', '5'):
+            print(f'''
+            -------------------------------------
+            {self.name}이(가) 방어태세에 들어갔습니다.
+            -------------------------------------''')
+            my_behavior = 'defence'
+
         else:
             print('값을 잘못 입력했습니다.')
+        return my_behavior
 
 
 # Normal 타입을 정의하는 클래스
@@ -349,9 +368,9 @@ class Pikachu(Electric):
         self.name = 'pikachu'
         self.lv = 3
         self.original_hp = 150*self.lv
-        self.hp = 450
+        self.hp = 150*self.lv
         self.original_skill_point = 50*self.lv
-        self.skill_point = 150
+        self.skill_point = 50*self.lv
         self.experience = 0
 
 #몬스터 중 마우스 클래스
@@ -359,16 +378,38 @@ class Pikachu(Electric):
 class Mouse(Normal):
     def __init__(self):
         super().__init__()
-        self.name = 'mouse'
+        self.name = '꼬렛'
         self.lv = 1
         self.original_hp = 150*self.lv
-        self.hp = 150
+        self.hp = 150*self.lv
         self.original_skill_point = 100*self.lv
-        self.skill_point = 100
+        self.skill_point = 100*self.lv
+
+class Pidgey(Normal):
+    def __init__(self):
+        super().__init__()
+        self.name = '구구'
+        self.lv = 1
+        self.original_hp = 100*self.lv
+        self.hp = 100*self.lv
+        self.original_skill_point = 150*self.lv
+        self.skill_point = 150*self.lv
+
+class Pidgeotto(Normal):
+    def __init__(self):
+        super().__init__()
+        self.name = '피죤'
+        self.lv = 1
+        self.original_hp = 120*self.lv
+        self.hp = 120*self.lv
+        self.original_skill_point = 100*self.lv
+        self.skill_point = 100*self.lv
 
 pikachu = Pikachu() #피카츄 생성
 mouse = Mouse() #몬스터 마우스 생성
-monster_1 = [mouse] #몬스터 리스트에 마우스 넣음
+pidgey = Pidgey() #몬스터 구구 생성
+pidgeotto = Pidgeotto() #몬스터 피죤 생성
+monster_1 = [mouse, pidgey, pidgeotto] #몬스터 리스트에 마우스 넣음
 me =Me() #player 생성
 me.mypokemon.append(pikachu) #player의 포켓몬 리스트에 피카츄 넣음
 
