@@ -116,8 +116,17 @@ def In_village(me):
         for i in range(0, len(me.mypokemon)):
             print(f'{i+1}) {me.mypokemon[i].name}')
         pokemon_name = input('진화에 시도할 포켓몬 이름을 입력하세요.')
-        
-        while # 반복문하면서 포켓몬 이름 찾기
+
+        # 반복문하면서 포켓몬 이름 찾기
+        j = 0
+        while True:
+            if pokemon_name == me.mypokemon[j].name:
+                pokemon_name = me.mypokemon[j]
+                break
+            elif j >= len(me.mypokemon):
+                break
+            else:
+                j += 1
         
         evolution_pokemon = me.mypokemon[me.mypokemon.index(pokemon_name)]
         if evolution_pokemon.experience >= 1000 * (evolution_pokemon.lv):
