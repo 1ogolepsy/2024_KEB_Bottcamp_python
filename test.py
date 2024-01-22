@@ -1,8 +1,4 @@
-import copy
-import random
+from collections import namedtuple
 
-def change(keep):
-    keep =False
-    return keep
-
-print(3    +   9)
+Duck = namedtuple('Duck', 'bill tail')
+print(Duck)

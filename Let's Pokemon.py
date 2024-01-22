@@ -115,41 +115,30 @@ def In_village(me):
         print('현재 보유한 포켓몬 중, 어떤 포켓몬을 진화시키시겠습니까?')
         for i in range(0, len(me.mypokemon)):
             print(f'{i+1}) {me.mypokemon[i].name}')
-        pokemon_name = input('진화에 시도할 포켓몬 이름을 입력하세요.')
+        evolution_pokemon = input('진화에 시도할 포켓몬 이름 또는 번호를 입력하세요.')
 
-        # 반복문하면서 포켓몬 이름 찾기
-        j = 0
-        while True:
-            if pokemon_name == me.mypokemon[j].name:
-                pokemon_name = me.mypokemon[j]
-                break
-            elif j >= len(me.mypokemon):
-                break
-            else:
-                j += 1
-        
-        evolution_pokemon = me.mypokemon[me.mypokemon.index(pokemon_name)]
-        if evolution_pokemon.experience >= 1000 * (evolution_pokemon.lv):
-            evolution_pokemon.lv += 1
-            evolution_pokemon.health()
-            print(f'''
-            ------------------------------------------------------------------
-            잠깐... {evolution_pokemon.name}의 상태가 이상하다...!
-            
-            
-            으앗!
-            {evolution_pokemon.name}가 진화에 성공했다!
-            현재 {evolution_pokemon.name}의 LV은 {evolution_pokemon.lv}이 됐다.
-            -------------------------------------------------------------------''')
-            return True
+        for i in range(0, len(me.mypokemon)):
+            if evolution_pokemon in (str(i+1), str(me.mypokemon[i].name)):
+                if evolution_pokemon.experience >= 1000 * (evolution_pokemon.lv):
+                    evolution_pokemon.lv += 1
+                    evolution_pokemon.health()
+                    print(f'''
+                    ------------------------------------------------------------------
+                    잠깐... {evolution_pokemon.name}의 상태가 이상하다...!
 
-        elif evolution_pokemon.experience < 1000 * (evolution_pokemon.lv):
-            print(f'아직 {evolution_pokemon.name}은 진화할 준비가 안 됐습니다.')
-            return True
 
+                    으앗!
+                    {evolution_pokemon.name}가 진화에 성공했다!
+                    현재 {evolution_pokemon.name}의 LV은 {evolution_pokemon.lv}이 됐다.
+                    -------------------------------------------------------------------''')
+                    return True
+
+                elif evolution_pokemon.experience < 1000 * (evolution_pokemon.lv):
+                    print(f'아직 {evolution_pokemon.name}은 진화할 준비가 안 됐습니다.')
+                    return True
         else:
             print('값을 잘못 입력했습니다.')
-            return True
+
 
     elif behave in ('마을에서 나가기', '3'):
         print('마을에서 나갑니다.')
@@ -174,7 +163,7 @@ def Lets_pight(self, target):
                     ---------------------------------------------------
                     ''')
         else:
-            behave = str(r.choices(range(1,3), weights=[49,1])[0])
+            behave = str(r.choices(range(1,4), weights=[30, 15, 5])[0])
 
 
         if behave in ('공격하기', '1'):
@@ -198,10 +187,9 @@ def Lets_pight(self, target):
             return my_behavior
 
         elif behave in ('도망가기', '3'):
-            target_hp_percentage = (target.original_hp / target.hp) / 2
-            percentage = r.choices(range(1, 11), weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, target_hp_percentage])
+            target_hp_percentage = (target.original_hp / target.hp)/5
+            percentage = r.choices(range(1, 11), weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, target_hp_percentage])[0]
             if percentage == 10:
-                target.health()
                 print(f'''
                 -----------------------------------------
                 {self.name}이(가) {target.name}으로부터 성공적으로 도망쳤습니다.
@@ -211,6 +199,10 @@ def Lets_pight(self, target):
             else:
                 print(f'''
                 -----------------------------------------------
+                {target.original_hp}, {target.hp}
+                {target_hp_percentage}
+                {percentage}
+                
                {self.name}이(가) {target.name}으로부터 도망치는 것에 실패했습니다.
                 {target.name}의 hp가 적을수록 도망치는 것이 수월합니다.
                 -----------------------------------------------
@@ -246,8 +238,9 @@ def Lets_pight(self, target):
             --------------------------------------------------''')
 
     last_target_behavior = 'start'
+    last_my_behavior = 'start'
     while True:
-        if ispight() and target.hp > 0 and last_target_behavior:
+        if ispight() and target.hp > 0 and last_target_behavior and last_my_behavior:
             last_my_behavior = What_kind_of_behave(self, target, last_target_behavior)
             if target.hp > 0 and last_my_behavior:
                 last_target_behavior = What_kind_of_behave(target, self, last_my_behavior)
