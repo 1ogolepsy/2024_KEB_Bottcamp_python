@@ -24,12 +24,14 @@
 #     게임 종료
 #     > 게임 종료
 
-import random
-r = random.Random()
+import random as r
+
 import copy
+
 # 마을 순서 리스트
 village = [('태초마을', 0), ('상록시티', 200), ('회색시티', 150), ('블루시티', 300), ('갈색시티', 100), ('보라타운',120), ('무지개시티', 150), ('연분홍시티', 100), ('노랑시티', 50), ('홍련마을', 100), ('석영고원', 50)]
 
+#내 포켓몬들이 싸울 수 있는 상태인지 리턴하는 함수
 def ispight() -> bool:
     '''
     내 포켓몬들 중에 싸울 수 있는 포켓몬이 하나라도 있어서 내가 싸울 수 있는 상태인지 판단하는 함수
@@ -40,6 +42,7 @@ def ispight() -> bool:
             return True
     return False
 
+#전투 후 경험치 증가 및 진화가능여부 프린트 함수
 def experience(self, target):
     '''
     self의 경험치를 올려주고, 진화가 가능한지 알려주는 함수
@@ -55,6 +58,7 @@ def experience(self, target):
         except AttributeError as error:
             pass
 
+#마을로 가는 함수
 def Lets_go_village(now):
     '''
     마을로 가는 행동을 하는 함수
@@ -78,11 +82,12 @@ def Lets_go_village(now):
             >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             {i}번째 발걸음을 옮기던 중,,,,,,,,,
             
-            이런!! 야생의 {monster.name}가 나타났다!!!
+            이런!! 야생의 {monster.name}이(가) 나타났다!!!
             나와라! {my_pokemon.name}!!
             >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
             ''')
             Lets_pight(my_pokemon, monster)
+
 
     print(f'''
     ------------------------------------
@@ -91,12 +96,10 @@ def Lets_go_village(now):
     ''')
     Me.now_village = next_village
 
+#마을 갔을 때, 행동하는 함수
 def In_village(me):
-    now_village = me.now_village
     behave = input(f'''
         --------------------------------------------------
-        무사히 {now_village}에 도착했습니다.
-
         마을에서 할 행동을 고르시오.
         1) 나의 포켓몬 회복시키기
         2) 포켓몬 진화시키기
@@ -106,81 +109,50 @@ def In_village(me):
     if behave in ('나의 포켓몬 회복시키기', '1'):
         for i in range(0, len(me.mypokemon)):
             me.mypokemon[i].health
+            print(f'{me.mypokemon[i].name}이(가) 회복됐습니다.')
+        return True
     elif behave in ('포켓몬 진화시키기', '2'):
         print('현재 보유한 포켓몬 중, 어떤 포켓몬을 진화시키시겠습니까?')
         for i in range(0, len(me.mypokemon)):
             print(f'{i+1}) {me.mypokemon[i].name}')
-        pokemon_name = input('포켓몬 이름을 입력하세요.')
+        pokemon_name = input('진화에 시도할 포켓몬 이름을 입력하세요.')
+        
+        while # 반복문하면서 포켓몬 이름 찾기
+        
         evolution_pokemon = me.mypokemon[me.mypokemon.index(pokemon_name)]
         if evolution_pokemon.experience >= 1000 * (evolution_pokemon.lv):
             evolution_pokemon.lv += 1
             evolution_pokemon.health()
+            print(f'''
+            ------------------------------------------------------------------
+            잠깐... {evolution_pokemon.name}의 상태가 이상하다...!
+            
+            
+            으앗!
+            {evolution_pokemon.name}가 진화에 성공했다!
+            현재 {evolution_pokemon.name}의 LV은 {evolution_pokemon.lv}이 됐다.
+            -------------------------------------------------------------------''')
+            return True
+
         elif evolution_pokemon.experience < 1000 * (evolution_pokemon.lv):
             print(f'아직 {evolution_pokemon.name}은 진화할 준비가 안 됐습니다.')
+            return True
+
         else:
             print('값을 잘못 입력했습니다.')
+            return True
+
     elif behave in ('마을에서 나가기', '3'):
         print('마을에서 나갑니다.')
+        return False
     else:
         print('값을 잘못 입력했습니다.')
-
-class Me: #player를 정의하는 클래스
-    def __init__(self):
-        self.ispokemon = False #player가 포켓몬인지 알 수 있는 속성
-        self.mypokemon = [] #player가 포켓몬이 들어있는 리스트
-        self.now_village = ('태초마을', 0) #player의 현재 마을을 알려주는 속성 (마을이름, 발걸음 수)
-
-def skill(self, target, damage, skillpoint):
-    '''
-    self가 target을 공격하는 함수
-    :param target: target(class 객체)
-    :param self: class 객체
-    :param damage: 공격하는 데미지
-    :param skillpoint: 필요 스킬포인트
-    :return:
-    '''
-    if self.skill_point >= skillpoint:
-
-        target.hp -= damage
-        self.skill_point -= skillpoint
-        print(f'''
-        >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        쿠궁 {self.name}이(가) 공격에 성공했습니다.
-        총 데미지는 {damage}입니다.
-        {target.name}의 HP는 {target.hp}입니다.
-        현재 {self.name}의 스킬포인트는 {self.skill_point}남았습니다.
-        ''')
-        def check_target_hp_to_victory(target, self):
-            '''
-            상대의 hp가 없어서 내가 승리했는지 확인하는 함수
-            :param target: 타겟의 클래스 객체
-            :param self: 공격하는 대상의 클래스 객체
-            :return:
-            '''
-            if target.hp <= 0:
-                print(f'''
-                -----------------------------------------
-                {self.name}이(가) 승리하였습니다!!
-                -----------------------------------------
-                ''')
-                experience(self, target)
-
-            else:
-                pass
-
-        check_target_hp_to_victory(target, self)
-    else:
-        print(f'''
-        ----------------------------------------------
-        {self.name}의 스킬포인트가 부족합니다.
-        {self.name}의 패배로 간주합니다.
-        ''')
-    self.plus_damage = 0
+        return True
 
 #스토리 중 전투가 시작되는 함수
 def Lets_pight(self, target):
     keep_pight = True
-    def What_kind_of_behave(self, target, pight, last_target_behavior):
+    def What_kind_of_behave(self, target, last_target_behavior):
 
         if self in me.mypokemon:
             behave = input('''
@@ -193,7 +165,7 @@ def Lets_pight(self, target):
                     ---------------------------------------------------
                     ''')
         else:
-            behave = str(random.choices(range(1,3), weights=[49,1])[0])
+            behave = str(r.choices(range(1,3), weights=[49,1])[0])
 
 
         if behave in ('공격하기', '1'):
@@ -217,8 +189,8 @@ def Lets_pight(self, target):
             return my_behavior
 
         elif behave in ('도망가기', '3'):
-            target_hp_percentage = (target.original_hp / target.hp) / 5
-            percentage = random.choices(range(1, 11), weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, target_hp_percentage])
+            target_hp_percentage = (target.original_hp / target.hp) / 2
+            percentage = r.choices(range(1, 11), weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, target_hp_percentage])
             if percentage == 10:
                 target.health()
                 print(f'''
@@ -237,7 +209,7 @@ def Lets_pight(self, target):
                 return True
         elif behave in ('포획하기', '4'):
             target_hp_percentage = (target.original_hp / target.hp)*10
-            percentage = random.choices(range(1, 11), weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, target_hp_percentage])[0]
+            percentage = r.choices(range(1, 11), weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, target_hp_percentage])[0]
             if percentage == 10:
                 my_pokemon = copy.deepcopy(target)
                 me.mypokemon += [my_pokemon]
@@ -267,11 +239,20 @@ def Lets_pight(self, target):
     last_target_behavior = 'start'
     while True:
         if ispight() and target.hp > 0 and last_target_behavior:
-            last_my_behavior = What_kind_of_behave(self, target, keep_pight, last_target_behavior)
-            if target.hp > 0 and keep_pight:
-                last_target_behavior = What_kind_of_behave(target, self, keep_pight, last_my_behavior)
+            last_my_behavior = What_kind_of_behave(self, target, last_target_behavior)
+            if target.hp > 0 and last_my_behavior:
+                last_target_behavior = What_kind_of_behave(target, self, last_my_behavior)
         else:
             break
+    target.health()
+
+#플레이어 클래스
+class Me: #player를 정의하는 클래스
+    def __init__(self):
+        self.ispokemon = False #player가 포켓몬인지 알 수 있는 속성
+        self.mypokemon = [] #player가 포켓몬이 들어있는 리스트
+        self.now_village = ('태초마을', 0) #player의 현재 마을을 알려주는 속성 (마을이름, 발걸음 수)
+
 
 #포켓몬을 정의하는 클래스
 class Pokemon:
@@ -281,6 +262,54 @@ class Pokemon:
     def health(self):
         self.hp = self.original_hp
         self.skill_point = self.original_skill_point
+
+    def skill(self, target, damage, skillpoint):
+        '''
+        self가 target을 공격하는 함수
+        :param target: target(class 객체)
+        :param self: class 객체
+        :param damage: 공격하는 데미지
+        :param skillpoint: 필요 스킬포인트
+        :return:
+        '''
+        if self.skill_point >= skillpoint:
+
+            target.hp -= damage
+            self.skill_point -= skillpoint
+            print(f'''
+            >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+            쿠궁 {self.name}이(가) 공격에 성공했습니다.
+            총 데미지는 {damage}입니다.
+            {target.name}의 HP는 {target.hp}입니다.
+            현재 {self.name}의 스킬포인트는 {self.skill_point}남았습니다.
+            ''')
+
+            def check_target_hp_to_victory(target, self):
+                '''
+                상대의 hp가 없어서 내가 승리했는지 확인하는 함수
+                :param target: 타겟의 클래스 객체
+                :param self: 공격하는 대상의 클래스 객체
+                :return:
+                '''
+                if target.hp <= 0:
+                    print(f'''
+                    -----------------------------------------
+                    {self.name}이(가) 승리하였습니다!!
+                    -----------------------------------------
+                    ''')
+                    experience(self, target)
+
+                else:
+                    pass
+
+            check_target_hp_to_victory(target, self)
+        else:
+            print(f'''
+            ----------------------------------------------
+            {self.name}의 스킬포인트가 부족합니다.
+            ----------------------------------------------
+            ''')
+        self.plus_damage = 0
 
 #Normal 타입을 정의하는 클래스
 class Normal(Pokemon):
@@ -306,13 +335,13 @@ class Normal(Pokemon):
         my_behavior = 'attack'
         #attack에 담긴대로 스킬 적용
         if attackkind in ('마구찌르기', '1'):
-            skill(target, self, (10+self.plus_damage), 5)
+            self.skill(target, (10+self.plus_damage), 5)
 
         elif attackkind in ('마구할퀴기', '2'):
-            skill(target, self, 15+self.plus_damage, 6)
+            self.skill(target, 15+self.plus_damage, 6)
 
         elif attackkind in ('몸통박치기', '3'):
-            skill(target, self, 15+self.plus_damage, 6)
+            self.skill(target, 15+self.plus_damage, 6)
 
         elif attackkind in ('비축하기', '4'):
             self.plus_damage = r.randint(5, 50)
@@ -326,7 +355,6 @@ class Normal(Pokemon):
         else:
             print('값을 잘못 입력했습니다.')
         return my_behavior
-
 
 # Normal 타입을 정의하는 클래스
 class Electric(Pokemon):
@@ -353,13 +381,13 @@ class Electric(Pokemon):
 
         # attack에 담긴대로 스킬 적용
         if attackkind in ('100만 볼트', '1'):
-            skill(target, self, (20+5*self.lv + self.plus_damage), 15)
+            self.skill(target, (20+5*self.lv + self.plus_damage), 15)
 
         elif attackkind in ('방전', '2'):
-            skill(target, self, 15+ 3*self.lv + self.plus_damage, 8)
+            self.skill(target, 15+ 3*self.lv + self.plus_damage, 8)
 
         elif attackkind in ('몸통박치기', '3'):
-            skill(target, self, 15 + 2*self.lv + self.plus_damage, 6)
+            self.skill(target, 15 + 2*self.lv + self.plus_damage, 6)
 
         elif attackkind in ('비축하기', '4'):
             self.plus_damage = r.randint(5, 50 + 10*self.lv)
@@ -369,7 +397,6 @@ class Electric(Pokemon):
             -------------------------------------''')
         else:
             print('값을 잘못 입력했습니다.')
-
 
 #피카츄 클래스
 class Pikachu(Electric):
@@ -384,8 +411,7 @@ class Pikachu(Electric):
         self.skill_point = 50*self.lv
         self.experience = 0
 
-#몬스터 중 마우스 클래스
-# 나중에 몬스터와 플레이어로 클래스를 나누면, 함수들이 더 간단해질듯
+#몬스터 중 꼬렛 클래스
 class Mouse(Normal):
     def __init__(self):
         super().__init__()
@@ -396,6 +422,7 @@ class Mouse(Normal):
         self.original_skill_point = 100*self.lv
         self.skill_point = 100*self.lv
 
+#몬스터 중 구구 클래스
 class Pidgey(Normal):
     def __init__(self):
         super().__init__()
@@ -406,6 +433,7 @@ class Pidgey(Normal):
         self.original_skill_point = 150*self.lv
         self.skill_point = 150*self.lv
 
+#몬스터 중 피죤 클래스
 class Pidgeotto(Normal):
     def __init__(self):
         super().__init__()
@@ -424,7 +452,7 @@ monster_1 = [mouse, pidgey, pidgeotto] #몬스터 리스트에 마우스 넣음
 me =Me() #player 생성
 me.mypokemon.append(pikachu) #player의 포켓몬 리스트에 피카츄 넣음
 
-#----------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------
 #실제 개임 실행부
 while ispight(): # 내 포켓몬이 싸움을 할 수 있는 동안에만 게임이 실행됨.
     behave_kind = input(print('''
@@ -446,11 +474,13 @@ while ispight(): # 내 포켓몬이 싸움을 할 수 있는 동안에만 게임
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>1
             ''')
         Lets_pight(me.mypokemon[0], monster)
-        monster.health()
 
     elif behave_kind in ('다음 마을로 이동', '2'):
         Lets_go_village(me.now_village)
-        In_village(me)
+        stay_village = True
+        while stay_village:
+            stay_village = In_village(me)
+
     elif behave_kind in ('챔피언 리그 도전하기', '3'):
         pass
     elif behave_kind in ('게임 종료', '4'):
@@ -461,7 +491,12 @@ while ispight(): # 내 포켓몬이 싸움을 할 수 있는 동안에만 게임
         ----------------------------------------------
         잘못된 값을 입력했습니다.
         ----------------------------------------------''')
-
+else:
+    print('''
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    모든 포켓몬이 행동불능에 빠졌습니다.
+    게임을 종료합니다.
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!''')
 # 내 포켓몬 바꾸기 기능 추가
 # 몬스터가 도망갔을 때 점검
 # 마을에서 하는 것들 추가
