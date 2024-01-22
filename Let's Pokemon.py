@@ -114,6 +114,7 @@ def In_village(me):
         evolution_pokemon = me.mypokemon[me.mypokemon.index(pokemon_name)]
         if evolution_pokemon.experience >= 1000 * (evolution_pokemon.lv):
             evolution_pokemon.lv += 1
+            evolution_pokemon.health()
         elif evolution_pokemon.experience < 1000 * (evolution_pokemon.lv):
             print(f'아직 {evolution_pokemon.name}은 진화할 준비가 안 됐습니다.')
         else:
@@ -296,17 +297,61 @@ class Normal(Pokemon):
         else:
             print('값을 잘못 입력했습니다.')
 
+
+# Normal 타입을 정의하는 클래스
+class Electric(Pokemon):
+    def __init__(self):
+        self.type = 'electric'
+        self.plus_damage = 0
+
+    def attack(self, target):
+
+        # 무슨 스킬을 사용할지 어택에 담음
+        if self in me.mypokemon:
+            attackkind = input(''' 
+
+            -----------------------------------------
+            공격하기!
+            1) 100만 볼트 : 데미지: 20 스킬 포인트: 15
+            2) 방전 : 데미지 15 스킬 포인트: 8
+            3) 몸통박치기 : 데미지 6 스킬 포인트: 2
+            4) 비축하기 : 다음 번 공격에 랜덤하게 데미지를 추가한다. 스킬 포인트: 10
+
+            스킬 이름 또는 번호를 입력하세요: ''')
+        else:
+            attackkind = str(r.randint(1, 4))
+
+        # attack에 담긴대로 스킬 적용
+        if attackkind in ('100만 볼트', '1'):
+            attack(target, self, (20+5*self.lv + self.plus_damage), 15)
+
+        elif attackkind in ('방전', '2'):
+            attack(target, self, 15+ 3*self.lv + self.plus_damage, 8)
+
+        elif attackkind in ('몸통박치기', '3'):
+            attack(target, self, 15 + 2*self.lv + self.plus_damage, 6)
+
+        elif attackkind in ('비축하기', '4'):
+            self.plus_damage = r.randint(5, 50 + 10*self.lv)
+            print(f'''
+            -------------------------------------
+            {self.name}이(가) 비축을 완료했습니다.
+            -------------------------------------''')
+        else:
+            print('값을 잘못 입력했습니다.')
+
+
 #피카츄 클래스
-class Pikachu(Normal):
+class Pikachu(Electric):
 
     def __init__(self):
         super().__init__()
         self.name = 'pikachu'
-        self.original_hp = 300
-        self.hp = 300
-        self.original_skill_point = 150
+        self.lv = 3
+        self.original_hp = 150*self.lv
+        self.hp = 450
+        self.original_skill_point = 50*self.lv
         self.skill_point = 150
-        self.lv = 1
         self.experience = 0
 
 #몬스터 중 마우스 클래스
@@ -315,11 +360,11 @@ class Mouse(Normal):
     def __init__(self):
         super().__init__()
         self.name = 'mouse'
-        self.original_hp = 150
-        self.hp = 150
-        self.original_skill_point = 100
-        self.skill_point = 100
         self.lv = 1
+        self.original_hp = 150*self.lv
+        self.hp = 150
+        self.original_skill_point = 100*self.lv
+        self.skill_point = 100
 
 pikachu = Pikachu() #피카츄 생성
 mouse = Mouse() #몬스터 마우스 생성
@@ -349,8 +394,7 @@ while ispight(): # 내 포켓몬이 싸움을 할 수 있는 동안에만 게임
         >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>1
             ''')
         Lets_pight(me.mypokemon[0], monster)
-        monster.hp = monster.original_hp
-        monster.skill_point = monster.original_skill_point
+        monster.health()
 
     elif behave_kind in ('다음 마을로 이동', '2'):
         Lets_go_village(me.now_village)
