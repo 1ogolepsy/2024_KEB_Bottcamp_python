@@ -130,7 +130,7 @@ class Me: #player를 정의하는 클래스
         self.mypokemon = [] #player가 포켓몬이 들어있는 리스트
         self.now_village = ('태초마을', 0) #player의 현재 마을을 알려주는 속성 (마을이름, 발걸음 수)
 
-def attack(target, self, damage, skillpoint, last_target_behavior):
+def skill(self, target, damage, skillpoint):
     '''
     self가 target을 공격하는 함수
     :param target: target(class 객체)
@@ -140,13 +140,7 @@ def attack(target, self, damage, skillpoint, last_target_behavior):
     :return:
     '''
     if self.skill_point >= skillpoint:
-        if last_target_behavior == 'defence':
-            print(f'''
-            -----------------------------------------
-            {target.name}이 방어태세에 돌입하여
-            공격에 실패했습니다.
-            -----------------------------------------
-            ''')
+
         target.hp -= damage
         self.skill_point -= skillpoint
         print(f'''
@@ -186,15 +180,16 @@ def attack(target, self, damage, skillpoint, last_target_behavior):
 #스토리 중 전투가 시작되는 함수
 def Lets_pight(self, target):
     keep_pight = True
-    def What_kind_of_behave(self, target, pight):
+    def What_kind_of_behave(self, target, pight, last_target_behavior):
 
         if self in me.mypokemon:
             behave = input('''
                     ---------------------------------------------------
                     취할 행동을 선택하세요.
                     1) 공격하기
-                    2) 도망가기
-                    3) 포획하기
+                    2) 방어하기
+                    3) 도망가기
+                    4) 포획하기
                     ---------------------------------------------------
                     ''')
         else:
@@ -202,10 +197,26 @@ def Lets_pight(self, target):
 
 
         if behave in ('공격하기', '1'):
-            self.attack(target)
+            if last_target_behavior == 'defence':
+                print(f'''
+                       -----------------------------------------
+                       {target.name}이(가) 방어태세에 돌입하여
+                       {self.name}의 공격에 실패했습니다.
+                       -----------------------------------------
+                       ''')
+            else:
+                self.attack(target)
             return True
 
-        elif behave in ('도망가기', '2'):
+        elif behave in ('방어하기', '2'):
+            print(f'''
+                       -------------------------------------
+                       {self.name}이(가) 방어태세에 들어갔습니다.
+                       -------------------------------------''')
+            my_behavior = 'defence'
+            return my_behavior
+
+        elif behave in ('도망가기', '3'):
             target_hp_percentage = (target.original_hp / target.hp) / 5
             percentage = random.choices(range(1, 11), weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, target_hp_percentage])
             if percentage == 10:
@@ -224,7 +235,7 @@ def Lets_pight(self, target):
                 -----------------------------------------------
                 ''')
                 return True
-        elif behave in ('포획하기', '3'):
+        elif behave in ('포획하기', '4'):
             target_hp_percentage = (target.original_hp / target.hp)*10
             percentage = random.choices(range(1, 11), weights=[1, 1, 1, 1, 1, 1, 1, 1, 1, target_hp_percentage])[0]
             if percentage == 10:
@@ -245,12 +256,20 @@ def Lets_pight(self, target):
                 -----------------------------------------------
                 ''')
                 return True
+        else:
+            print(f'''
+            --------------------------------------------------
+            player가 명령을 잘못내려
+            한 턴이 넘어갑니다.
+            불쌍한 {self.name} ㅠㅠ
+            --------------------------------------------------''')
 
+    last_target_behavior = 'start'
     while True:
-        if ispight() and target.hp > 0 and keep_pight:
-            keep_pight = What_kind_of_behave(self, target, keep_pight)
+        if ispight() and target.hp > 0 and last_target_behavior:
+            last_my_behavior = What_kind_of_behave(self, target, keep_pight, last_target_behavior)
             if target.hp > 0 and keep_pight:
-                keep_pight = What_kind_of_behave(target, self, keep_pight)
+                last_target_behavior = What_kind_of_behave(target, self, keep_pight, last_my_behavior)
         else:
             break
 
@@ -268,7 +287,7 @@ class Normal(Pokemon):
     def __init__(self):
         self.type = 'normal'
         self.plus_damage = 0
-    def attack(self, target, last_target_behavior):
+    def attack(self, target):
 
         # 무슨 스킬을 사용할지 어택에 담음
         if self in me.mypokemon:
@@ -280,7 +299,6 @@ class Normal(Pokemon):
             2) 마구할퀴기 : 데미지 15 스킬 포인트: 6
             3) 몸통박치기 : 데미지 6 스킬 포인트: 2
             4) 비축하기 : 다음 번 공격에 랜덤하게 데미지를 추가한다. 스킬 포인트: 10
-            5) 방어하기 : 다음 번 공격을 방어한다. 스킬 포인트: 20
     
             스킬 이름 또는 번호를 입력하세요: ''')
         else:
@@ -288,13 +306,13 @@ class Normal(Pokemon):
         my_behavior = 'attack'
         #attack에 담긴대로 스킬 적용
         if attackkind in ('마구찌르기', '1'):
-            attack(target, self, (10+self.plus_damage), 5, last_target_behavior)
+            skill(target, self, (10+self.plus_damage), 5)
 
         elif attackkind in ('마구할퀴기', '2'):
-            attack(target, self, 15+self.plus_damage, 6, last_target_behavior)
+            skill(target, self, 15+self.plus_damage, 6)
 
         elif attackkind in ('몸통박치기', '3'):
-            attack(target, self, 15+self.plus_damage, 6, last_target_behavior)
+            skill(target, self, 15+self.plus_damage, 6)
 
         elif attackkind in ('비축하기', '4'):
             self.plus_damage = r.randint(5, 50)
@@ -304,13 +322,6 @@ class Normal(Pokemon):
             -------------------------------------''')
             self.skill_point -= 10
             my_behavior = 'increased damage'
-
-        elif attackkind in ('방어하기', '5'):
-            print(f'''
-            -------------------------------------
-            {self.name}이(가) 방어태세에 들어갔습니다.
-            -------------------------------------''')
-            my_behavior = 'defence'
 
         else:
             print('값을 잘못 입력했습니다.')
@@ -342,13 +353,13 @@ class Electric(Pokemon):
 
         # attack에 담긴대로 스킬 적용
         if attackkind in ('100만 볼트', '1'):
-            attack(target, self, (20+5*self.lv + self.plus_damage), 15)
+            skill(target, self, (20+5*self.lv + self.plus_damage), 15)
 
         elif attackkind in ('방전', '2'):
-            attack(target, self, 15+ 3*self.lv + self.plus_damage, 8)
+            skill(target, self, 15+ 3*self.lv + self.plus_damage, 8)
 
         elif attackkind in ('몸통박치기', '3'):
-            attack(target, self, 15 + 2*self.lv + self.plus_damage, 6)
+            skill(target, self, 15 + 2*self.lv + self.plus_damage, 6)
 
         elif attackkind in ('비축하기', '4'):
             self.plus_damage = r.randint(5, 50 + 10*self.lv)
@@ -451,7 +462,7 @@ while ispight(): # 내 포켓몬이 싸움을 할 수 있는 동안에만 게임
         잘못된 값을 입력했습니다.
         ----------------------------------------------''')
 
-# 도망가기 점검
+# 내 포켓몬 바꾸기 기능 추가
 # 몬스터가 도망갔을 때 점검
 # 마을에서 하는 것들 추가
 # 코드 효율 점검
